@@ -5,17 +5,13 @@ pipeline{
         }
     stages
     {
-       stage('SCA')
-	    {
-		    steps
-		    {
-                   sh 'sudo dependency-check.sh --scan . -f XML -o .'
+	    stage('SCA'){
+		    steps{
+                   sh 'dependency-check.sh --scan . -f XML -o .'
 		    }
 	    }
-       stage('Build')
-        {
-            steps 
-            {
+       stage('Build'){
+            steps{
                     // for build
                     sh 'gradle clean build --no-daemon'                                        
             }
