@@ -5,11 +5,14 @@ pipeline{
         }
     stages
     {
-       stage ('Software Composition Analysis'){
-            steps {
-              sh 'dependency-check.sh --scan . -f XML -o .'
-	    }
-       }
+       stage('Dependency Checking'){
+		steps{
+			script{
+				
+				dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'SCA'
+			}
+		}
+	}
        stage('Build')
        {
             steps
