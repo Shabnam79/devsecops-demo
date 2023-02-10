@@ -5,6 +5,11 @@ pipeline{
         }
     stages
     {
+       stage ('Software Composition Analysis'){
+            steps {
+              sh 'sudo dependency-check.sh --scan . -f XML -o .'
+	    }
+       }
        stage('Build')
        {
             steps
