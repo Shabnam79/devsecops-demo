@@ -10,6 +10,7 @@ pipeline{
 			script{
 				
 				dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'SCA'
+				dependencyCheckPublisher pattern: ''
 			}
 		}
 	}
