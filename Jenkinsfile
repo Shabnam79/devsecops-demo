@@ -6,8 +6,6 @@ pipeline{
     stages
     {
 	    stage('SCA'){
-		    steps{
-		    }
 	    }
        stage('Build'){
             steps{
