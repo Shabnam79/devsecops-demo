@@ -7,7 +7,13 @@ pipeline{
     {
 	    stage('SCA'){
 		    steps{
-                   sh 'dependency-check.sh --scan . -f XML -o .'
+                  dependencyCheck additionalArguments: ''' 
+                    -o "./" 
+                    -s "./"
+                    -f "ALL" 
+                    --prettyPrint''', odcInstallation: 'OWASP-DC'
+
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
 		    }
 	    }
        stage('Build'){
