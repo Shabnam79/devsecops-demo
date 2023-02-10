@@ -9,7 +9,7 @@ pipeline{
 		steps{
 			script{
 				
-				dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'SCA'
+				dependencyCheck additionalArguments: '--format XML', odcInstallation: 'SCA'
 				dependencyCheckPublisher pattern: ''
 			}
 		}
