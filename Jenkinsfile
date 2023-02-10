@@ -10,7 +10,7 @@ pipeline{
             steps 
             {
                     // for build
-                    sh './gradlew clean build --no-daemon'                                        
+                    sh 'gradle clean build --no-daemon'                                        
             }
         }
     }
