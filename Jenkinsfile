@@ -5,10 +5,10 @@ pipeline{
         }
     stages
     {
-	    stage('SCA'){
-	    }
-       stage('Build'){
-            steps{
+       stage('Build')
+       {
+            steps
+            {
                     // for build
                     sh 'gradle clean build --no-daemon'                                        
             }
