@@ -14,13 +14,17 @@ pipeline{
 			}
 		}
 	}
-       stage('Build')
-       {
-            steps
-            {
-                    // for build
-                    sh 'gradle clean build --no-daemon'                                        
+       stage('Build'){
+            steps{
+                sh 'cd /home/testing/tx-web'
+                sh 'docker build -t devsecops . '
+                sh 'docker tag devsecops:latest pritidevops/devsecops:latest'
+                withDockerRegistry([credentialsId: "Dockerhub", url: ""]) 
+                {
+                    sh  'docker push pritidevops/devsecops:latest'
+                }
             }
-	}
+        }
+
     }
 }
