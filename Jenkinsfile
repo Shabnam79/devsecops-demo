@@ -17,7 +17,6 @@ pipeline{
        stage('Build'){
             steps{
 		 sh 'ls '
-                 sh 'cd /home/ubuntu/devsecops-demo'
                  sh 'docker build -t devsecops . '
                  sh 'docker tag devsecops:latest pritidevops/devsecops:latest'
                  withDockerRegistry([credentialsId: "Dockerhub", url: ""]) 
