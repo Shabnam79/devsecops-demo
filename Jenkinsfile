@@ -18,10 +18,10 @@ pipeline{
             steps{
 		 sh 'ls '
                  sh 'docker build -t devsecops . '
-                 sh 'docker tag devsecops:latest pritidevops/devsecops:latest'
+                 sh 'docker tag devsecops:latest shabnam790/devsecops:latest'
                  withDockerRegistry([credentialsId: "Dockerhub", url: ""]) 
                  {
-                     sh  'docker push pritidevops/devsecops:latest'
+                     sh  'docker push shabnam790/devsecops:latest'
                    }
             }
         }
