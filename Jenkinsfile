@@ -16,13 +16,14 @@ pipeline{
 	}
        stage('Build'){
             steps{
-                sh 'cd /home/ubuntu/devsecops-demo'
-                sh 'docker build -t devsecops . '
-                sh 'docker tag devsecops:latest pritidevops/devsecops:latest'
-                withDockerRegistry([credentialsId: "Dockerhub", url: ""]) 
-                {
-                    sh  'docker push pritidevops/devsecops:latest'
-                }
+		   sh 'ls '
+//                 sh 'cd /home/ubuntu/devsecops-demo'
+//                 sh 'docker build -t devsecops . '
+//                 sh 'docker tag devsecops:latest pritidevops/devsecops:latest'
+//                 withDockerRegistry([credentialsId: "Dockerhub", url: ""]) 
+//                 {
+//                     sh  'docker push pritidevops/devsecops:latest'
+//                 }
             }
         }
 
