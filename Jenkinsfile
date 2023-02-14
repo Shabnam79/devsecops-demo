@@ -38,7 +38,7 @@ pipeline{
 		    steps{
 			 //   sh 'wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl'
 			  //  sh 'trivy image --format template --template @./html.tpl -o report.html shabnam790/devsecops:latest'
-			      sh 'trivy image shabnam790/devsecops:latest'
+			      sh 'trivy image shabnam790/devsecops:latest  --output trivy_report.html '
 		    }
 	    }
         stage ('Staging') {
