@@ -36,7 +36,7 @@ pipeline{
 	stage('Image Scanning')
 	    {
 		    steps{
-			    sh 'trivy shabnam790/devsecops'
+			    sh 'trivy image --format template --template @./html.tpl -o report.html shabnam790/devsecops:latest'
 		    }
 	    }
         stage ('Staging') {
