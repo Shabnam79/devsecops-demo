@@ -18,7 +18,7 @@ pipeline{
               steps {
                     sh 'rm trufflehog || true'
                     sh 'docker run -t gesellix/trufflehog –entropy=NO –regex --json https://github.com/Shabnam79/devsecops-demo.git > output.txt'
-		      sh 'cat output.txt |grep -oE “\”stringsFound\”\:.[.\”]{”|sed -e “s/,\”.]//” -e “s/}//”|sed “s/\”stringsFound\”://”|grep -o “\”.\””|awk -F “,” '{ for(i=1;i<=NF;i++) print $i}' '
+		    sh 'cat output.txt | grep -oE '\\"stringsFound\\":.[^\\"]*{' | sed -e 's/,\\".*//' -e 's/}//' | sed 's/\\"stringsFound\\"://' | grep -o '\\"[^\\"]*\\"' | awk -F ',' '{ for(i=1;i<=NF;i++) print $i}'
    }
 }
        stage('Build'){
