@@ -17,7 +17,7 @@ pipeline{
 	stage('Check Git Secrets') {
               steps {
                     sh 'rm trufflehog || true'
-                    sh 'docker run -t gesellix/trufflehog --regex --entropy False https://github.com/Shabnam79/devsecops-demo.git > output.txt'
+                    sh 'docker run -t gesellix/trufflehog --json https://github.com/Shabnam79/devsecops-demo.git > output.txt'
 		    sh "cat output.txt | grep -oE '\\\"stringsFound\\\":.[^\\\\\\\"]*{' | sed -e 's/,\\\\\\\".*//' -e 's/}//' | sed 's/\\\\\\\"stringsFound\\\\\\\"://' | grep -o '\\\"[^\\\\\\\"]*\\\"' | awk -F ',' '{ for(i=1;i<=NF;i++) print \$i}'"
 
    }
