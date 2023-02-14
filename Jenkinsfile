@@ -14,6 +14,13 @@ pipeline{
 			}
 		}
 	}
+	stage('Check Git Secrets') {
+              steps {
+                    sh 'rm trufflehog || true'
+                    sh 'docker run -t gesellix/trufflehog --json https://github.com/Shabnam79/devsecops-demo.git > trufflehog'
+                    sh 'cat trufflehog'
+   }
+}
        stage('Build'){
             steps{
 		 sh 'ls '
