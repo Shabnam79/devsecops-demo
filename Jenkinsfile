@@ -32,13 +32,21 @@ pipeline{
             steps{
 		 sh 'ls '
                  sh 'docker build -t devsecops . '
-                 sh 'docker tag devsecops:latest shabnam790/devsecops:latest'
-                 withDockerRegistry([credentialsId: "Dockerhub", url: ""]) 
-                 {
-                     sh  'docker push shabnam790/devsecops:latest'
-                   }
+//                 sh 'docker tag devsecops:latest shabnam790/devsecops:latest'
+//                  withDockerRegistry([credentialsId: "Dockerhub", url: ""]) 
+//                  {
+//                      sh  'docker push shabnam790/devsecops:latest'
+//                    }
             }
         }
+	  stage('Publish Docker Image to ECR'){
+			steps{
+				sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/r2c7u8u4'
+				sh 'docker tag devsecops:latest public.ecr.aws/r2c7u8u4/devsecops:latest'
+				sh 'docker push public.ecr.aws/r2c7u8u4/devsecops:latest'
+			}
+		}
+
 	stage('Image Scanning')
 	    {
 		    steps{
