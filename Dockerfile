@@ -1,6 +1,6 @@
 # Use an existing Gradle image as the base image
 FROM gradle:6.7.0-jdk14 AS build
-
+HEALTHCHECK NONE
 # Set the working directory
 WORKDIR /app
 
