@@ -22,6 +22,12 @@ pipeline{
 
    }
 }
+	 stage ('Docker File Scan'){
+			steps{
+				  sh 'sudo checkov -f Dockerfile --skip-check CKV_DOCKER_3 '        //skip USER in Dockerfile with CKV_DOCKER_3
+			}
+		}
+
        stage('Build'){
             steps{
 		 sh 'ls '
