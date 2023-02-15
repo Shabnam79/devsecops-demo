@@ -22,31 +22,33 @@ pipeline{
 
    }
 }
+	 stage('Gradle Build')
+	    {
+		    steps{
+			    echo 'mai gradle hu'
+		    }
+	    }
+	  stage('Unit Testing')
+	    {
+		    steps{
+			    echo'testing'
+		    }
+	    }
 	 stage ('Docker File Scan'){
 			steps{
 				  sh 'checkov -f Dockerfile --skip-check CKV_DOCKER_3 '        //skip USER in Dockerfile with CKV_DOCKER_3
 			}
 		}
-
-       stage('Build'){
+       stage('build docker image'){
             steps{
 		 sh 'ls '
                  sh 'docker build -t devsecops . '
-//                 sh 'docker tag devsecops:latest shabnam790/devsecops:latest'
-//                  withDockerRegistry([credentialsId: "Dockerhub", url: ""]) 
-//                  {
-//                      sh  'docker push shabnam790/devsecops:latest'
-//                    }
+                 sh 'docker tag devsecops:latest shabnam790/devsecops:latest'
+                  withDockerRegistry([credentialsId: "Dockerhub", url: ""]) 
+		    {                      sh  'docker push shabnam790/devsecops:latest'
+                  }
             }
         }
-	  stage('Publish Docker Image to ECR'){
-			steps{
-				sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/r2c7u8u4'
-				sh 'docker tag devsecops:latest public.ecr.aws/r2c7u8u4/devsecops:latest'
-				sh 'docker push public.ecr.aws/r2c7u8u4/devsecops:latest'
-			}
-		}
-
 	stage('Image Scanning')
 	    {
 		    steps{
@@ -55,11 +57,29 @@ pipeline{
 			      sh 'trivy image shabnam790/devsecops:latest '
 		    }
 	    }
-        stage ('Staging') {
+	 stage('push to dockerhub')
+	    {
+		    steps{
+		    echo 'dockerhub push'
+		    }
+	    }
+	  stage ('Staging') {
             steps {
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'docker-staging', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'docker rm -f devsecops-test && docker pull shabnam790/devsecops && docker run -itd -p 9090:9090 --name devsecops-test shabnam790/devsecops:latest', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'vulnerable-staging', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '**/*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])            
             }
         }
+	    stage ('container scan in staging')
+	    {
+		    steps{
+		    echo''
+		    }
+	    }
+	    stage ('pre prod approval')
+	    {
+		    steps{
+		    echo''
+		    }
+	    }
 	 stage ('Production') {
             steps {
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'docker-production', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'docker rm -f devsecops-prod && docker pull shabnam790/devsecops && docker run -itd -p 9090:9090 --name devsecops-prod shabnam790/devsecops:latest --name devsecops-prod', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'vulnerable-prod', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '**/*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])            
